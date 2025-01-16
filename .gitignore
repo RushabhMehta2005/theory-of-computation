@@ -6,3 +6,4 @@ venv/
 .vscode/
 *.egg-info/
 .DS_Store
+test.py
