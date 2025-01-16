@@ -1,6 +1,6 @@
 # Theory of Computation Library
 
-This library provides tools for creating and manipulating deterministic finite automata (DFA). It includes classes to represent states (`State`) and collections of states (`StateSet`).
+This library provides tools for creating and manipulating deterministic finite automata (DFA). It includes classes to represent states, alphabets and more to come.
 
 ## Installation
 
@@ -51,11 +51,36 @@ print(state)
 # Output: q1 (accept)
 ```
 
+### **Creating an Alphabet Set**
+
+Here is an example of how to use the `AlphabetSet` class:
+
+```python
+from theory_of_computation import AlphabetSet
+
+# Create an AlphabetSet
+sigma = AlphabetSet("abc")
+print(sigma)  # Output: {a, b, c}
+
+# Add a new symbol
+sigma.add("d")
+print(sigma)  # Output: {a, b, c, d}
+
+# Remove a symbol
+sigma.remove("a")
+print(sigma)  # Output: {b, c, d}
+
+# Check membership
+print(sigma.contains("b"))  # Output: True
+print(sigma.contains("a"))  # Output: False
+```
+
 ## Features
 
 - Define a state set for a DFA with a given size.
 - Mark states as start or accepting states.
 - Easily access the start state and manipulate individual states.
+- Define alphabet sets and perform basic operations on them.
 
 ## Contributing
 
