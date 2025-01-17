@@ -13,27 +13,27 @@ class Alphabet:
     Represents a single symbol in the alphabet of a DFA.
 
     Attributes:
-        character (str): The character represented by this Alphabet object.
+        symbol (str): The symbol represented by this Alphabet object.
     """
 
-    def __init__(self, character: str) -> None:
-        if len(character) != 1 or not character.isalnum():
+    def __init__(self, symbol: str) -> None:
+        if len(symbol) != 1 or not symbol.isalnum():
             raise ValueError(
-                f"Invalid alphabet character: '{character}'. Must be a single alphanumeric character."
+                f"Invalid alphabet symbol: '{symbol}'. Must be a single alphanumeric symbol."
             )
-        self.character = character
+        self.symbol = symbol
 
     def __eq__(self, other) -> bool:
-        return isinstance(other, Alphabet) and self.character == other.character
+        return isinstance(other, Alphabet) and self.symbol == other.symbol
 
     def __hash__(self) -> int:
-        return hash(self.character)
+        return hash(self.symbol)
 
     def __repr__(self) -> str:
-        return f"Alphabet(character='{self.character}')"
+        return f"Alphabet(symbol='{self.symbol}')"
 
     def __str__(self) -> str:
-        return self.character
+        return self.symbol
 
 
 class AlphabetSet:
@@ -41,54 +41,104 @@ class AlphabetSet:
     Represents the complete set of symbols in the alphabet of a DFA.
 
     Attributes:
-        characters (set[Alphabet]): The set of alphabet symbols.
+        symbols (dict[str, Alphabet]): The dictionary of alphabet symbols mapped by their symbols.
     """
 
     def __init__(self, alphabets: str) -> None:
+        """
+        Initializes the AlphabetSet.
+
+        Args:
+            alphabets (str): A string of unique alphanumeric symbols.
+
+        Raises:
+            ValueError: If the input string is empty or contains duplicates.
+        """
         if not alphabets:
             raise ValueError("AlphabetSet cannot be initialized with an empty string.")
-        self.characters = set()
+        
+        self.symbols = {}
         self._validate_and_add_alphabets(alphabets)
 
     def _validate_and_add_alphabets(self, alphabets: str) -> None:
+        """
+        Validates and adds alphabets to the set, ensuring uniqueness.
+
+        Args:
+            alphabets (str): The string of symbols to validate and add.
+
+        Raises:
+            ValueError: If duplicate symbols are found in the input.
+        """
         for char in alphabets:
-            if not self.contains(char):
-                self.add(char)
-            else:
+            if char in self.symbols:
                 raise ValueError(
-                    f"AlphabetSet cannot be initialized with duplicate elements. {char} found."
+                    f"AlphabetSet cannot be initialized with duplicate elements. '{char}' found."
                 )
+            self.add(char)
 
     @property
     def size(self) -> int:
-        return len(self.characters)
+        """Returns the size of the alphabet set."""
+        return len(self.symbols)
 
     def add(self, char: str) -> None:
-        """Adds a new symbol to the alphabet set."""
+        """
+        Adds a new symbol to the alphabet set.
+
+        Args:
+            char (str): The symbol to add.
+
+        Raises:
+            ValueError: If the symbol is not alphanumeric.
+        """
+        if not char.isalnum():
+            raise ValueError(f"Only alphanumeric symbols are allowed. '{char}' is invalid.")
+        
         alphabet = Alphabet(char)
-        self.characters.add(alphabet)
+        self.symbols[char] = alphabet
+
+        # Dynamically add the symbol as an attribute
+        setattr(self, char, alphabet)
 
     def remove(self, char: str) -> None:
-        """Removes a symbol from the alphabet set."""
-        if not self.contains(char):
-            raise ValueError(f"{char} does not belong in the alphabet set.")
-        self.characters.discard(Alphabet(char))
+        """
+        Removes a symbol from the alphabet set.
+
+        Args:
+            char (str): The symbol to remove.
+
+        Raises:
+            ValueError: If the symbol does not exist in the alphabet set.
+        """
+        if char not in self.symbols:
+            raise ValueError(f"'{char}' does not belong in the alphabet set.")
+        
+        del self.symbols[char]
+
+        # Remove the dynamically added attribute
+        delattr(self, char)
 
     def contains(self, char: str) -> bool:
-        """Checks if a symbol exists in the alphabet set."""
-        return Alphabet(char) in self.characters
+        """
+        Checks if a symbol exists in the alphabet set.
+
+        Args:
+            char (str): The symbol to check.
+
+        Returns:
+            bool: True if the symbol exists, False otherwise.
+        """
+        return char in self.symbols
 
     def __iter__(self):
-        return iter(sorted(self.characters, key=lambda x: x.character))
+        """Allows iteration over the symbols in the alphabet set."""
+        return iter(sorted(self.symbols.values(), key=lambda x: x.symbol))
 
     def __repr__(self) -> str:
-        return f"AlphabetSet(size={self.size}, characters={list(self.characters)})"
+        """Returns a developer-friendly representation of the AlphabetSet."""
+        return f"AlphabetSet(size={self.size}, symbols={list(self.symbols.keys())})"
 
     def __str__(self) -> str:
-        return (
-            "{"
-            + ", ".join(
-                str(char) for char in sorted(self.characters, key=lambda x: x.character)
-            )
-            + "}"
-        )
+        """Returns a string representation of the AlphabetSet."""
+        return "{" + ", ".join(sorted(self.symbols.keys())) + "}"

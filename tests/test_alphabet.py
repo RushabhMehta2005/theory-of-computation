@@ -5,7 +5,7 @@ from theory_of_computation import Alphabet, AlphabetSet
 class TestAlphabet(unittest.TestCase):
     def test_create_valid_alphabet(self):
         alphabet = Alphabet("a")
-        self.assertEqual(alphabet.character, "a")
+        self.assertEqual(alphabet.symbol, "a")
 
     def test_create_invalid_alphabet_empty(self):
         with self.assertRaises(ValueError):
