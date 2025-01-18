@@ -57,6 +57,13 @@ class TestStateSet(unittest.TestCase):
         self.assertTrue(state_set.states[3].is_accepting)
         self.assertFalse(state_set.states[0].is_accepting)
 
+    def test_accepting_states(self):
+        state_set = StateSet(size=4)
+        state_set.set_accepting_states([1, 3])
+        self.assertEqual(
+            state_set.accepting_states, [state_set.states[1], state_set.states[3]]
+        )
+
     def test_invalid_start_state(self):
         state_set = StateSet(size=2)
         with self.assertRaises(IndexError):
@@ -78,3 +85,6 @@ class TestStateSet(unittest.TestCase):
         state_set.set_accepting_states([1])
         expected = "{q0 (start), q1 (accept)}"
         self.assertEqual(str(state_set), expected)
+
+if __name__ == "__main__":
+    unittest.main()

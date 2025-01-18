@@ -1,10 +1,37 @@
-# Theory of Computation Library
+# **Theory of Computation Library**
 
-This library provides tools for creating and manipulating deterministic finite automata (DFA). It includes classes to represent states, alphabets and more to come.
+This library provides tools for creating and manipulating Deterministic Finite Automata (DFA) and serves as a foundation for exploring various computational models. It is designed to be modular and extensible, making it easy to work with automata theory in Python.
 
-## Installation
+---
 
-To use this library, clone the repository and add it to your Python path:
+## **Features**
+
+### Current Capabilities:
+- **State Management**:
+  - Create, modify, and manage states in a DFA.
+  - Define start and accepting states.
+- **Alphabet Manipulation**:
+  - Define and manage alphabet sets for the DFA.
+  - Perform operations like adding, removing, or checking membership of symbols.
+- **Transition Functions**:
+  - Define state transitions based on input symbols.
+  - Support for deterministic state transitions.
+- **DFA Simulation**:
+  - Simulate a DFA for a given input string.
+  - Check whether a DFA accepts or rejects input.
+
+### Upcoming Features:
+- Nondeterministic Finite Automata (NFA) support.
+- Regular expression to DFA conversion.
+- Minimization of DFA.
+- Visualizations for automata and state transitions.
+- Extended functionality for other computational models, like Pushdown Automata and Turing Machines.
+
+---
+
+## **Installation**
+
+Clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/RushabhMehta2005/theory-of-computation.git
@@ -13,75 +40,125 @@ git clone https://github.com/RushabhMehta2005/theory-of-computation.git
 Then, import the desired classes in your Python scripts:
 
 ```python
-from theory_of_computation import State, StateSet
+from theory_of_computation import State, StateSet, AlphabetSet, TransitionFunction, DFA
 ```
 
-## Usage
+---
 
-Below are some examples to help you get started.
+## **Usage**
 
-### **Creating a State Set**
+### **1. Creating a DFA**
+Here’s a complete example to create and test a DFA:
 
 ```python
-from theory_of_computation import State, StateSet
+from theory_of_computation import StateSet, AlphabetSet, TransitionFunction, DFA
 
-# Create a StateSet with 4 states
-Q = StateSet(4)
-
-# Set the start state to state 0
+# Step 1: Define States
+Q = StateSet(3)
 Q.set_start_state(0)
+Q.set_accepting_states([2])
 
-# Mark states 2 and 3 as accepting states
-Q.set_accepting_states([2, 3])
+# Step 2: Define Alphabet
+sigma = AlphabetSet("ab")
 
-# Print the start state
-print(Q.start_state)  # Output: q0 (start)
+# Step 3: Define Transitions
+delta = TransitionFunction(sigma)
+delta.add_transition(0, sigma.a, 1)
+delta.add_transition(0, sigma.b, 0)
+delta.add_transition(1, sigma.a, 1)
+delta.add_transition(1, sigma.b, 2)
+delta.add_transition(2, sigma.a, 2)
+delta.add_transition(2, sigma.b, 1)
 
-# Print all states in the set
-print(Q)
-# Output: {q0 (start), q1, q2 (accept), q3 (accept)}
+# Step 4: Create DFA
+M = DFA(Q, sigma, delta)
+
+# Step 5: Test DFA
+input_string = "abbab"
+print(M.accepts(input_string))  # Output: True
 ```
 
-### **Manipulating Individual States**
+---
+
+### **2. Working with State Sets**
 
 ```python
-state = Q.states[1]  # Get the state with ID 1
-state.set_accepting()  # Mark it as accepting
-print(state)
-# Output: q1 (accept)
+from theory_of_computation import StateSet
+
+Q = StateSet(5)  # Define a state set with 5 states
+
+# Set the start and accepting states
+Q.set_start_state(0)
+Q.set_accepting_states([3, 4])
+
+# Access states
+print(Q.start_state)  # Output: q0 (start)
+print(Q)  # Output: {q0 (start), q1, q2, q3 (accept), q4 (accept)}
 ```
 
-### **Creating an Alphabet Set**
+---
 
-Here is an example of how to use the `AlphabetSet` class:
+### **3. Defining and Using Alphabet Sets**
 
 ```python
 from theory_of_computation import AlphabetSet
 
-# Create an AlphabetSet
-sigma = AlphabetSet("abc")
-print(sigma)  # Output: {a, b, c}
-
-# Add a new symbol
-sigma.add("d")
-print(sigma)  # Output: {a, b, c, d}
-
-# Remove a symbol
-sigma.remove("a")
-print(sigma)  # Output: {b, c, d}
-
-# Check membership
+sigma = AlphabetSet("abc")  # Define an alphabet set with 'a', 'b', 'c'
+sigma.add("d")  # Add a symbol
+sigma.remove("a")  # Remove a symbol
 print(sigma.contains("b"))  # Output: True
-print(sigma.contains("a"))  # Output: False
 ```
 
-## Features
+---
 
-- Define a state set for a DFA with a given size.
-- Mark states as start or accepting states.
-- Easily access the start state and manipulate individual states.
-- Define alphabet sets and perform basic operations on them.
+### **4. Defining Transition Functions**
 
-## Contributing
+```python
+from theory_of_computation import AlphabetSet, TransitionFunction
 
-Contributions are welcome! Feel free to open issues or submit pull requests.
+sigma = AlphabetSet("ab")
+delta = TransitionFunction(sigma)
+
+# Define transitions
+delta.add_transition(0, sigma.a, 1)
+delta.add_transition(0, sigma.b, 0)
+delta.add_transition(1, sigma.b, 2)
+
+print(delta)
+# Output:
+# q0 -> a -> q1
+# q0 -> b -> q0
+# q1 -> b -> q2
+```
+
+---
+
+## **Testing**
+
+Run unit tests to ensure functionality:
+
+```bash
+python -m unittest discover tests/
+```
+
+---
+
+## **Documentation**
+
+### Classes Overview:
+1. **`StateSet`**: Represents the set of states in an automaton.
+2. **`AlphabetSet`**: Represents the alphabet used by the automaton.
+3. **`TransitionFunction`**: Defines transitions between states.
+4. **`DFA`**: Represents a deterministic finite automaton.
+
+For detailed API usage, refer to the inline documentation in the source code.
+
+---
+
+## **Contributing**
+
+Contributions are welcome! To contribute:
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit changes with clear descriptions.
+4. Submit a pull request for review.

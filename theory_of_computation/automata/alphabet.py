@@ -29,6 +29,9 @@ class Alphabet:
     def __hash__(self) -> int:
         return hash(self.symbol)
 
+    def __len__(self) -> int:
+        return len(self.symbol)
+
     def __repr__(self) -> str:
         return f"Alphabet(symbol='{self.symbol}')"
 
@@ -56,8 +59,9 @@ class AlphabetSet:
         """
         if not alphabets:
             raise ValueError("AlphabetSet cannot be initialized with an empty string.")
-        
+
         self.symbols = {}
+        self.lookup = {}  # ("a" -> Alphabet("a"))
         self._validate_and_add_alphabets(alphabets)
 
     def _validate_and_add_alphabets(self, alphabets: str) -> None:
@@ -93,13 +97,16 @@ class AlphabetSet:
             ValueError: If the symbol is not alphanumeric.
         """
         if not char.isalnum():
-            raise ValueError(f"Only alphanumeric symbols are allowed. '{char}' is invalid.")
-        
+            raise ValueError(
+                f"Only alphanumeric symbols are allowed. '{char}' is invalid."
+            )
+
         alphabet = Alphabet(char)
         self.symbols[char] = alphabet
 
         # Dynamically add the symbol as an attribute
         setattr(self, char, alphabet)
+        self.lookup[char] = alphabet
 
     def remove(self, char: str) -> None:
         """
@@ -113,11 +120,13 @@ class AlphabetSet:
         """
         if char not in self.symbols:
             raise ValueError(f"'{char}' does not belong in the alphabet set.")
-        
+
         del self.symbols[char]
 
         # Remove the dynamically added attribute
         delattr(self, char)
+
+        del self.lookup[char]
 
     def contains(self, char: str) -> bool:
         """
@@ -130,6 +139,10 @@ class AlphabetSet:
             bool: True if the symbol exists, False otherwise.
         """
         return char in self.symbols
+
+    def __contains__(self, other: Alphabet) -> bool:
+        letter_str = other.symbol
+        return letter_str in self.symbols and self.symbols[letter_str] == other
 
     def __iter__(self):
         """Allows iteration over the symbols in the alphabet set."""

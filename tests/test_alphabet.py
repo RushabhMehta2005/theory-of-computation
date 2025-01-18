@@ -59,7 +59,15 @@ class TestAlphabetSet(unittest.TestCase):
         self.assertTrue(alphabet_set.contains("a"))
         self.assertFalse(alphabet_set.contains("z"))
 
+    def test_in_operator(self):
+        alphabet_set = AlphabetSet("abcd")
+        self.assertTrue(alphabet_set.a in alphabet_set)
+        self.assertFalse(alphabet_set.b not in alphabet_set)
+
     def test_iterate_over_alphabet_set(self):
         alphabet_set = AlphabetSet("abc")
         alphabets = [str(alphabet) for alphabet in alphabet_set]
         self.assertEqual(alphabets, ["a", "b", "c"])
+
+if __name__ == "__main__":
+    unittest.main()

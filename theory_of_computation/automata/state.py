@@ -7,7 +7,7 @@ Classes:
     - StateSet: Represents a collection of states in the automaton.
 """
 
-from typing import Iterable
+from typing import List, Iterable
 
 
 class State:
@@ -127,12 +127,7 @@ class StateSet:
         size (int): The number of states in the set.
         states (List[State]): The list of states in the set.
         start_state (State): The start state of the automaton.
-
-    Methods:
-        set_accepting_states(indices: Iterable[int]) -> None:
-            Marks specified states as accepting.
-        set_start_state(index: int) -> None:
-            Sets the start state of the automaton.
+        accepting_states (List[State]): The list of accepting states in the set
     """
 
     def __init__(self, size: int) -> None:
@@ -150,6 +145,7 @@ class StateSet:
         self.size = size
         self.states = [State(q_i) for q_i in range(size)]
         self._start_state = None
+        self._accepting_states = []
 
     def set_accepting_states(self, indices: Iterable[int]) -> None:
         """
@@ -164,6 +160,7 @@ class StateSet:
         for i in indices:
             self._validate_index(i)
             self.states[i].set_accepting()
+            self._accepting_states.append(self.states[i])
 
     def set_start_state(self, index: int) -> None:
         """
@@ -197,6 +194,10 @@ class StateSet:
                 f"No start state provided, see StateSet.set_start_state(index) for more details."
             )
         return self._start_state
+
+    @property
+    def accepting_states(self) -> List[State]:
+        return self._accepting_states
 
     def _validate_index(self, index: int) -> None:
         """
