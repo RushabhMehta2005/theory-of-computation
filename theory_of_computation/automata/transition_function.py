@@ -38,7 +38,7 @@ class TransitionFunction:
 
         Args:
             current_state (int): The ID of the current state.
-            symbol (str): The input symbol (validated against the AlphabetSet).
+            symbol (Alphabet): The input symbol (validated against the AlphabetSet).
             next_state (int): The ID of the next state.
 
         Raises:

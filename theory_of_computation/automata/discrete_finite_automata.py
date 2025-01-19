@@ -55,7 +55,7 @@ class DFA:
         self._initialise_current_state()
 
     def _convert_str_to_alphabet_list(self, input_string: str) -> List[Alphabet]:
-        return [self.sigma.lookup[symbol] for symbol in input_string]
+        return [self.sigma.symbols[symbol] for symbol in input_string]
 
     def __repr__(self) -> str:
         return (

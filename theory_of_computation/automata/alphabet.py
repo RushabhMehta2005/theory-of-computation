@@ -7,6 +7,7 @@ Classes:
     - AlphabetSet: Represents the complete set of symbols in the automaton's alphabet.
 """
 
+from typing import Dict
 
 class Alphabet:
     """
@@ -60,8 +61,7 @@ class AlphabetSet:
         if not alphabets:
             raise ValueError("AlphabetSet cannot be initialized with an empty string.")
 
-        self.symbols = {}
-        self.lookup = {}  # ("a" -> Alphabet("a"))
+        self.symbols: Dict[str, Alphabet] = {} # maps str to its alphabet instance
         self._validate_and_add_alphabets(alphabets)
 
     def _validate_and_add_alphabets(self, alphabets: str) -> None:
@@ -106,7 +106,6 @@ class AlphabetSet:
 
         # Dynamically add the symbol as an attribute
         setattr(self, char, alphabet)
-        self.lookup[char] = alphabet
 
     def remove(self, char: str) -> None:
         """
@@ -126,7 +125,6 @@ class AlphabetSet:
         # Remove the dynamically added attribute
         delattr(self, char)
 
-        del self.lookup[char]
 
     def contains(self, char: str) -> bool:
         """
