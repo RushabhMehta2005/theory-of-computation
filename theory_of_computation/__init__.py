@@ -1,1 +1,10 @@
-from .automata import State, StateSet, Alphabet, AlphabetSet, TransitionFunction, DFA
+from .automata import (
+    State,
+    StateSet,
+    Alphabet,
+    AlphabetSet,
+    TransitionFunction,
+    DFA,
+    MultiValuedTransitionFunction,
+    NFA,
+)

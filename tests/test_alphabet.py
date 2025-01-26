@@ -69,5 +69,6 @@ class TestAlphabetSet(unittest.TestCase):
         alphabets = [str(alphabet) for alphabet in alphabet_set]
         self.assertEqual(alphabets, ["a", "b", "c"])
 
+
 if __name__ == "__main__":
     unittest.main()

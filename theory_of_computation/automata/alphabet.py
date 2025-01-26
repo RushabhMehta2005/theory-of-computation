@@ -9,6 +9,7 @@ Classes:
 
 from typing import Dict
 
+
 class Alphabet:
     """
     Represents a single symbol in the alphabet of a DFA.
@@ -61,7 +62,7 @@ class AlphabetSet:
         if not alphabets:
             raise ValueError("AlphabetSet cannot be initialized with an empty string.")
 
-        self.symbols: Dict[str, Alphabet] = {} # maps str to its alphabet instance
+        self.symbols: Dict[str, Alphabet] = {}  # maps str to its alphabet instance
         self._validate_and_add_alphabets(alphabets)
 
     def _validate_and_add_alphabets(self, alphabets: str) -> None:
@@ -124,7 +125,6 @@ class AlphabetSet:
 
         # Remove the dynamically added attribute
         delattr(self, char)
-
 
     def contains(self, char: str) -> bool:
         """

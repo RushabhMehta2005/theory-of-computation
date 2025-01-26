@@ -13,7 +13,9 @@ from .transition_function import TransitionFunction
 
 
 class DFA:
-    def __init__(self, Q: StateSet, sigma: AlphabetSet, delta: TransitionFunction) -> None:
+    def __init__(
+        self, Q: StateSet, sigma: AlphabetSet, delta: TransitionFunction
+    ) -> None:
         self.Q = Q
         self.sigma = sigma
         self.delta = delta
@@ -29,7 +31,9 @@ class DFA:
                 )
             self._eat(letter)
 
-    def accepts(self, input_string: List[Alphabet] | str, verbose: bool=True, reset_after=True) -> bool:
+    def accepts(
+        self, input_string: List[Alphabet] | str, verbose: bool = True, reset_after=True
+    ) -> bool:
         if isinstance(input_string, str):
             input_string = self._convert_str_to_alphabet_list(input_string)
         self.feed(input_string, verbose)

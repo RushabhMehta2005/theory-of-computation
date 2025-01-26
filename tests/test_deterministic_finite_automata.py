@@ -1,6 +1,7 @@
 import unittest
 from theory_of_computation import StateSet, AlphabetSet, TransitionFunction, DFA
 
+
 class TestDFA(unittest.TestCase):
     def setUp(self):
         self.Q = StateSet(3)
@@ -52,13 +53,18 @@ class TestDFA(unittest.TestCase):
 
     def test_trace(self):
         self.M.accepts("abb", reset_after=False)
-        expected_trace = [[0, self.sigma.a, 1], [1, self.sigma.b, 2], [2, self.sigma.b, 1]]
+        expected_trace = [
+            [0, self.sigma.a, 1],
+            [1, self.sigma.b, 2],
+            [2, self.sigma.b, 1],
+        ]
         self.assertEqual(self.M.trace, expected_trace)
 
     def test_repr_and_str(self):
         self.assertIn("DFA", repr(self.M))
         self.assertIn("start_state=q0", repr(self.M))
         self.assertIn("sigma", repr(self.M))
+
 
 if __name__ == "__main__":
     unittest.main()

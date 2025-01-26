@@ -86,5 +86,6 @@ class TestStateSet(unittest.TestCase):
         expected = "{q0 (start), q1 (accept)}"
         self.assertEqual(str(state_set), expected)
 
+
 if __name__ == "__main__":
     unittest.main()
