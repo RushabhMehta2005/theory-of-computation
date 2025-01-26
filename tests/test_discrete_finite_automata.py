@@ -1,8 +1,4 @@
 import unittest
-from theory_of_computation import DFA
-
-
-import unittest
 from theory_of_computation import StateSet, AlphabetSet, TransitionFunction, DFA
 
 class TestDFA(unittest.TestCase):
@@ -53,6 +49,11 @@ class TestDFA(unittest.TestCase):
         # Edge case: Single-character strings
         self.assertFalse(self.M.accepts("a"))
         self.assertFalse(self.M.accepts("b"))
+
+    def test_trace(self):
+        self.M.accepts("abb", reset_after=False)
+        expected_trace = [[0, self.sigma.a, 1], [1, self.sigma.b, 2], [2, self.sigma.b, 1]]
+        self.assertEqual(self.M.trace, expected_trace)
 
     def test_repr_and_str(self):
         self.assertIn("DFA", repr(self.M))
