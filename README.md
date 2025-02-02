@@ -20,7 +20,7 @@ A powerful, extensible Python library for exploring and simulating computational
 - DFA minimization algorithms
 - Extended computational models support
 
-## 🛠 Installation
+## 🛠 Installation (in the future)
 
 ```bash
 pip install theory-of-computation
