@@ -7,4 +7,5 @@ from .automata import (
     DFA,
     MultiValuedTransitionFunction,
     NFA,
+    Epsilon
 )

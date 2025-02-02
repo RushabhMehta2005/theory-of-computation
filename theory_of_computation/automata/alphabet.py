@@ -5,6 +5,8 @@ deterministic finite automata (DFA).
 Classes:
     - Alphabet: Represents a single symbol in the automaton's alphabet.
     - AlphabetSet: Represents the complete set of symbols in the automaton's alphabet.
+Special Objects:
+    - Epsilon: Represents the empty string in theory of computation
 """
 
 from typing import Dict
@@ -19,11 +21,14 @@ class Alphabet:
     """
 
     def __init__(self, symbol: str) -> None:
-        if len(symbol) != 1 or not symbol.isalnum():
+        if symbol == "":
+            self.symbol = symbol
+        elif len(symbol) != 1 or not symbol.isalnum():
             raise ValueError(
                 f"Invalid alphabet symbol: '{symbol}'. Must be a single alphanumeric symbol."
             )
-        self.symbol = symbol
+        else:
+            self.symbol = symbol
 
     def __eq__(self, other) -> bool:
         return isinstance(other, Alphabet) and self.symbol == other.symbol
@@ -39,6 +44,9 @@ class Alphabet:
 
     def __str__(self) -> str:
         return self.symbol
+
+
+Epsilon = Alphabet("")
 
 
 class AlphabetSet:
@@ -63,6 +71,8 @@ class AlphabetSet:
             raise ValueError("AlphabetSet cannot be initialized with an empty string.")
 
         self.symbols: Dict[str, Alphabet] = {}  # maps str to its alphabet instance
+        self.symbols[""] = Epsilon
+        setattr(self, "Epsilon", Epsilon)
         self._validate_and_add_alphabets(alphabets)
 
     def _validate_and_add_alphabets(self, alphabets: str) -> None:
@@ -85,7 +95,7 @@ class AlphabetSet:
     @property
     def size(self) -> int:
         """Returns the size of the alphabet set."""
-        return len(self.symbols)
+        return len(self.symbols) - 1 # -1 to exclude Epsilon
 
     def add(self, char: str) -> None:
         """

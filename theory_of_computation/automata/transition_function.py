@@ -11,7 +11,7 @@ Classes:
 
 from typing import Dict, Tuple, List, Union, Set
 from collections import defaultdict
-from .alphabet import Alphabet, AlphabetSet
+from .alphabet import Alphabet, AlphabetSet, Epsilon
 
 
 class BaseTransitionFunction:
@@ -261,6 +261,9 @@ class MultiValuedTransitionFunction(BaseTransitionFunction):
             KeyError: If no transition exists for the given (state, symbol) pair.
         """
         if (current_state, symbol) not in self.transitions:
+            # If there is an Epsilon transition available
+            if len(self.transitions[(current_state, Epsilon)]) > 0:
+                return list(self.transitions[(current_state, Epsilon)])
             raise KeyError(
                 f"No transition defined for state {current_state} with symbol '{symbol}'."
             )

@@ -7,10 +7,6 @@ class TestAlphabet(unittest.TestCase):
         alphabet = Alphabet("a")
         self.assertEqual(alphabet.symbol, "a")
 
-    def test_create_invalid_alphabet_empty(self):
-        with self.assertRaises(ValueError):
-            Alphabet("")
-
     def test_create_invalid_alphabet_non_alphanumeric(self):
         with self.assertRaises(ValueError):
             Alphabet("!")
@@ -67,7 +63,7 @@ class TestAlphabetSet(unittest.TestCase):
     def test_iterate_over_alphabet_set(self):
         alphabet_set = AlphabetSet("abc")
         alphabets = [str(alphabet) for alphabet in alphabet_set]
-        self.assertEqual(alphabets, ["a", "b", "c"])
+        self.assertEqual(alphabets, ["", "a", "b", "c"])
 
 
 if __name__ == "__main__":
