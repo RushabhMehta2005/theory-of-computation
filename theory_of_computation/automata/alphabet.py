@@ -1,5 +1,5 @@
 """
-This module provides classes for representing and manipulating alphabet sets of 
+This module provides classes for representing and manipulating alphabet sets of
 deterministic finite automata (DFA).
 
 Classes:
@@ -21,14 +21,11 @@ class Alphabet:
     """
 
     def __init__(self, symbol: str) -> None:
-        if symbol == "":
-            self.symbol = symbol
-        elif len(symbol) != 1 or not symbol.isalnum():
+        if symbol != "" and (len(symbol) != 1 or not symbol.isalnum()):
             raise ValueError(
                 f"Invalid alphabet symbol: '{symbol}'. Must be a single alphanumeric symbol."
             )
-        else:
-            self.symbol = symbol
+        self.symbol = symbol
 
     def __eq__(self, other) -> bool:
         return isinstance(other, Alphabet) and self.symbol == other.symbol
@@ -95,7 +92,7 @@ class AlphabetSet:
     @property
     def size(self) -> int:
         """Returns the size of the alphabet set."""
-        return len(self.symbols) - 1 # -1 to exclude Epsilon
+        return len(self.symbols) - 1  # -1 to exclude Epsilon
 
     def add(self, char: str) -> None:
         """
@@ -107,11 +104,6 @@ class AlphabetSet:
         Raises:
             ValueError: If the symbol is not alphanumeric.
         """
-        if not char.isalnum():
-            raise ValueError(
-                f"Only alphanumeric symbols are allowed. '{char}' is invalid."
-            )
-
         alphabet = Alphabet(char)
         self.symbols[char] = alphabet
 
@@ -149,6 +141,7 @@ class AlphabetSet:
         return char in self.symbols
 
     def __contains__(self, other: Alphabet) -> bool:
+        """Enables membership checks using the `in` operator."""
         letter_str = other.symbol
         return letter_str in self.symbols and self.symbols[letter_str] == other
 
