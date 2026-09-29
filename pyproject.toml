@@ -1,0 +1,25 @@
+# information on how to build the system
+[build-system]
+requires = ["setuptools>=68"] # defines setuptools floor
+build-backend = "setuptools.build_meta" # interface for pythons build frontend
+
+[project] 
+# define actual project requirements
+
+name = "automata-theory" # name of the distribution for package managers (like pip)
+version = "0.1.0" # version no
+description = "A python lib to simulate the working and construction of finite automata"
+readme = "README.md" 
+requires-python = ">=3.8" # min python version for working
+authors = [
+	{ name = "Rushabh Mehta" }
+]
+keywords = ["automata", "DFA", "NFA", "Theory of Computation"]
+
+[project.urls]
+Repository = "https://github.com/ayush-bothra/theory-of-computation"
+Original = "https://github.com/RushabhMehta2005/theory-of-computation"
+
+[tools.setuptools.packages.find]
+where = ["."] # search from proj root
+inlcude = ["theory_of_computation*"] # include these package names
