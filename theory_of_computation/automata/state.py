@@ -1,5 +1,5 @@
 """
-This module provides classes for representing and manipulating states of 
+This module provides classes for representing and manipulating states of
 deterministic finite automata (DFA).
 
 Classes:
@@ -94,6 +94,15 @@ class State:
         if isinstance(other, State):
             return self._id == other.id
         return False
+
+    def __hash__(self) -> int:
+        """
+        Returns the hash of the state based on its unique ID.
+
+        Returns:
+            int: The hash value of the state ID.
+        """
+        return hash(self._id)
 
     def __repr__(self) -> str:
         """
@@ -191,7 +200,7 @@ class StateSet:
         """
         if self._start_state is None:
             raise ValueError(
-                f"No start state provided, see StateSet.set_start_state(index) for more details."
+                "No start state provided, see StateSet.set_start_state(index) for more details."
             )
         return self._start_state
 
@@ -213,6 +222,47 @@ class StateSet:
             raise IndexError(
                 f"Index {index} out of bounds for StateSet of size {self.size}."
             )
+
+    def contains(self, index: int) -> bool:
+        """
+        Checks if a state index exists in the state set.
+
+        Args:
+            index (int): The index of the state to check.
+
+        Returns:
+            bool: True if the index is valid for this state set, False otherwise.
+        """
+        return 0 <= index < self.size
+
+    def __contains__(self, other: State) -> bool:
+        """
+        Checks if a State instance belongs to this state set.
+
+        Args:
+            other (State): The state object to check.
+
+        Returns:
+            bool: True if the state belongs to this set, False otherwise.
+        """
+        if not isinstance(other, State):
+            return False
+        return self.contains(other.id) and self.states[other.id] == other
+
+    def __len__(self) -> int:
+        """
+        Returns the size of the state set.
+
+        Returns:
+            int: The number of states in the set.
+        """
+        return self.size
+
+    def __iter__(self):
+        """
+        Allows iteration over the states in the state set.
+        """
+        return iter(self.states)
 
     def __repr__(self) -> str:
         """
