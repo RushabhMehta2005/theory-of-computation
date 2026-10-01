@@ -19,7 +19,7 @@ class TestState(unittest.TestCase):
         state.set_start()
         self.assertTrue(state.is_start)
 
-    def test_set_start(self):
+    def test_unset_start(self):
         state = State(id=4)
         state.set_start()
         state.unset_start()
@@ -32,6 +32,16 @@ class TestState(unittest.TestCase):
         self.assertEqual(state1, state2)
         self.assertNotEqual(state2, state3)
         self.assertNotEqual(state1, state3)
+
+    def test_hash(self):
+        state1 = State(id=1)
+        state2 = State(id=1)
+        state3 = State(id=2)
+        self.assertEqual(hash(state1), hash(state2))
+        state_set = {state1, state2, state3}
+        self.assertEqual(len(state_set), 2)
+        self.assertIn(state1, state_set)
+        self.assertIn(state3, state_set)
 
     def test_string_representation(self):
         state = State(id=4, start=True, accepting=True)
@@ -78,6 +88,32 @@ class TestStateSet(unittest.TestCase):
         state_set = StateSet(size=2)
         with self.assertRaises(ValueError):
             _ = state_set.start_state
+
+    def test_contains(self):
+        state_set = StateSet(size=3)
+        self.assertTrue(state_set.contains(0))
+        self.assertTrue(state_set.contains(1))
+        self.assertTrue(state_set.contains(2))
+        self.assertFalse(state_set.contains(3))
+        self.assertFalse(state_set.contains(-1))
+
+    def test_contains_dunder(self):
+        state_set = StateSet(size=3)
+        self.assertIn(state_set.states[0], state_set)
+        self.assertIn(state_set.states[1], state_set)
+        self.assertIn(state_set.states[2], state_set)
+        self.assertNotIn(State(id=5), state_set)
+        self.assertNotIn("invalid", state_set)
+        self.assertNotIn(0, state_set)
+
+    def test_len(self):
+        state_set = StateSet(size=4)
+        self.assertEqual(len(state_set), 4)
+
+    def test_iter(self):
+        state_set = StateSet(size=3)
+        states = list(state_set)
+        self.assertEqual(states, state_set.states)
 
     def test_string_representation(self):
         state_set = StateSet(size=2)
